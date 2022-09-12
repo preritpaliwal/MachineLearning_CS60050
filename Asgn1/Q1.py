@@ -1,68 +1,56 @@
-from re import I
+from imghdr import tests
+from DecisionTree import decisionTree
 import pandas as pd
-import math
+import numpy as np
 
-class Node:
-    def __init__(self,attribute):
-        self.attribute = attribute
-        self.children = []
+
+"""
+data splitting
+"""
+def trainTestSplit(dataSet, testRatio,shuffle=True):
+    if shuffle:
+        dataSet = dataSet.sample(frac=1)
+    n = len(dataSet)
+    n_test = int(n*(testRatio))
+    testSet = dataSet[:n_test]
+    trainSet = dataSet[n_test:]
+    return trainSet,testSet
+
+def predict(decisionTreeNode, x):
+    # print("attribute = ",decisionTreeNode.attribute)
+    if decisionTreeNode.isLeaf():
+        return decisionTreeNode.label
+    x_bar = x[decisionTreeNode.attribute]
+    # print(x_bar)
+    # print(decisionTreeNode.children)
+    if x_bar in decisionTreeNode.children:
+        newNode = decisionTreeNode.children[x_bar]
+    else:
+        print("Fuckkkkkkkkkkk again..!!!!")
+        return None
+    return predict(newNode,x)
+
+def main():
+    dataSet = pd.read_csv("cleanedData.csv")
+    # print(dataSet.head())
+    # print(dataSet.dtypes)
+    trainSet, testSet = trainTestSplit(dataSet=dataSet,testRatio=0.2)
+    decisionTreeRoot = decisionTree(trainSet)
+    if decisionTreeRoot is None:
+        print("fuckkkkkkkk..!!")
+        return
     
-    def addChild(self,x):
-        self.children.append(x)
-
-def getDFs(df, attr):
-    dfs = []
-    valCnt = df[attr].value_counts()
-    for i in range(len(valCnt)):
-        dfi = df[df[attr]==valCnt.index[i]]
-        dfs.append(dfi)
-    return dfs
-
-def getEntropy(df):
-    total = len(df["Segmentation"])
-    valCnt = df["Segmentation"].value_counts()
-    ans = 0
-    for i in range(len(valCnt)):
-        tmp = valCnt[i]/total
-        ans -= tmp*math.log(tmp)
-    return ans
-
-def getIG(df, attr):
-    initialEntropy = getEntropy(df)
-    total = len(df[attr])
-    valCnt = df[attr].value_counts()
-    finalEntropy = 0
-    dfs = getDFs(df,attr)
-    print(valCnt)
-    for i in range(len(dfs)):
-        print(valCnt[i])
-        tmp = valCnt[i]/total
-        finalEntropy += tmp*getEntropy(dfs[i])
-    return initialEntropy - finalEntropy
-
-def getInfoGainList(df,attrs):
-    infoGain = []
-    for attr in attrs:
-        infoGain.append(getIG(df,attr))
-    return infoGain
-
-def getNextNode(df):
-    attributes = df.columns.values
+    accuracy = 0
+    # print(testSet)
+    for i in range(len(testSet)):
+        sample = testSet.iloc[i]
+        # print(sample["Profession"])
+        y_hat = predict(decisionTreeNode=decisionTreeRoot,x=sample)
+        if y_hat==sample["Segmentation"]:
+            accuracy+=1
+            print("hurrayyy..!! correct accuracy increased",accuracy)
     
-    InfoGainPerAttr = getInfoGainList(df,attributes)
-    
-    i_max = 0
-    for i in range(1,len(attributes)):
-        if InfoGainPerAttr[i]>InfoGainPerAttr[i_max]:
-            i_max = i
-    
-    n = Node(attribute=attributes[i_max])
-    dfs = getDFs(df,attributes[i_max])
-    for df in dfs:
-        n.addChild(getNextNode(df=df))
-    return n
+    print("Accuracy = ",accuracy/len(testSet))
 
-df = pd.read_csv("cleanedData.csv")
-# print(df.head())
-
-decisionTreeClassifier = getNextNode(df)
+if __name__ == "__main__":
+    main()

@@ -10,6 +10,7 @@ df = pd.read_csv("Dataset_A.csv")
 """
 
 naList = df.isna().sum()
+# print(naList)
 for i in range(len(naList)):
     if(naList[i]>0):
         col = naList.index[i]
@@ -23,9 +24,11 @@ LABEL ENCODING
 """
 df1 = df.dtypes
 for i in range(len(df1)):
+    col = df1.index[i]
     if df1[i]=="object":
-        col = df1.index[i]
         df[col] = df[col].astype("category").cat.codes
+    elif df1[i]=="float64":
+        df[col] = df[col].astype("int64")
 
 print(df.head())
 df = df.drop(columns=["ID"])
@@ -34,13 +37,18 @@ print(df.head())
 """
 Grouping Age into 0-9, 10-19, 20-29, etc ranges
 """
+
 df["Age"] = df["Age"]//10
 
-valCnt = df["Gender"].value_counts()
-dfs = []
-for i in range(len(valCnt)):
-    dfi = df[df["Gender"]==valCnt.index[i]]
-    dfs.append(dfi)
-    print(dfi)
+# valCnt = df["Gender"].value_counts()
+# dfs = []
+# for i in range(len(valCnt)):
+#     dfi = df[df["Gender"]==valCnt.index[i]]
+#     dfs.append(dfi)
+#     print(dfi)
 
-# df.to_csv("cleanedData.csv",index=False)
+
+"""
+Writing final cleand data to csv file
+"""
+df.to_csv("cleanedData.csv",index=False)
