@@ -22,6 +22,7 @@ for i in range(len(naList)):
 """
 LABEL ENCODING
 """
+
 df1 = df.dtypes
 for i in range(len(df1)):
     col = df1.index[i]

@@ -11,7 +11,7 @@ class Node:
         self.children[x[0]] = x[1]
     
     def isLeaf(self):
-        if len(self.children)==0:
+        if self.label is not None:
             return True
         return False
 
@@ -56,7 +56,7 @@ def getNextNode(x,y):
     if(len(attributes)==0):
         # print("why go here")
         return None
-    
+
     if(len(attributes)==1):
         valCnt = y.value_counts()
         n = Node(attribute=attributes[0])
@@ -99,3 +99,45 @@ def decisionTree(TrainData):
     # print(x.head())
     # print(y.head())
     return getNextNode(x,y)
+
+def predict(decisionTreeNode, x):
+    if decisionTreeNode.isLeaf():
+        return decisionTreeNode.label
+    x_bar = x[decisionTreeNode.attribute]
+    if x_bar in decisionTreeNode.children:
+        newNode = decisionTreeNode.children[x_bar]
+    else:
+        # print("Fuckkkkkkkkkkk again..!!!!")
+        return None
+    return predict(newNode,x)
+
+def getAccuracy(root, testSet):
+    accuracy = 0
+    for i in range(len(testSet)):
+        sample = testSet.iloc[i]
+        y_hat = predict(decisionTreeNode=root,x=sample)
+        if y_hat==sample["Segmentation"]:
+            accuracy+=1
+            # print("hurrayyy..!! correct accuracy increased",accuracy)
+    accuracy = accuracy/len(testSet)
+    print("Accuracy = ",accuracy)
+    return accuracy
+
+def pruneNode(root, curNode, validationSet,depth=0):
+    if curNode.isLeaf():
+        return
+    i = 0
+    for child in curNode.children:
+        print("before i = ",i," at depth : ",depth)
+        pruneNode(root=root,curNode=curNode.children[child],validationSet=validationSet,depth=depth+1)
+        print("done with child i = ",i," at depth : ",depth)
+        i += 1
+    
+    initialAccuracy = getAccuracy(root, validationSet)
+    valCnt = validationSet["Segmentation"].value_counts()
+    curNode.label = valCnt.index[0]
+    newAccuracy = getAccuracy(root, validationSet)
+    if newAccuracy < initialAccuracy + 0.001:
+        print("\n\n\nundoo pruning.........\n\n\n")
+        curNode.label = None
+    return

@@ -1,5 +1,4 @@
-from imghdr import tests
-from DecisionTree import decisionTree
+from DecisionTree import decisionTree,pruneNode,getAccuracy
 import pandas as pd
 import numpy as np
 
@@ -16,41 +15,23 @@ def trainTestSplit(dataSet, testRatio,shuffle=True):
     trainSet = dataSet[n_test:]
     return trainSet,testSet
 
-def predict(decisionTreeNode, x):
-    # print("attribute = ",decisionTreeNode.attribute)
-    if decisionTreeNode.isLeaf():
-        return decisionTreeNode.label
-    x_bar = x[decisionTreeNode.attribute]
-    # print(x_bar)
-    # print(decisionTreeNode.children)
-    if x_bar in decisionTreeNode.children:
-        newNode = decisionTreeNode.children[x_bar]
-    else:
-        print("Fuckkkkkkkkkkk again..!!!!")
-        return None
-    return predict(newNode,x)
-
 def main():
     dataSet = pd.read_csv("cleanedData.csv")
     # print(dataSet.head())
     # print(dataSet.dtypes)
     trainSet, testSet = trainTestSplit(dataSet=dataSet,testRatio=0.2)
+    trainSet, validationSet = trainTestSplit(dataSet=trainSet, testRatio=0.1)
     decisionTreeRoot = decisionTree(trainSet)
     if decisionTreeRoot is None:
         print("fuckkkkkkkk..!!")
         return
-    
-    accuracy = 0
-    # print(testSet)
-    for i in range(len(testSet)):
-        sample = testSet.iloc[i]
-        # print(sample["Profession"])
-        y_hat = predict(decisionTreeNode=decisionTreeRoot,x=sample)
-        if y_hat==sample["Segmentation"]:
-            accuracy+=1
-            print("hurrayyy..!! correct accuracy increased",accuracy)
-    
-    print("Accuracy = ",accuracy/len(testSet))
+    accuracy = getAccuracy(decisionTreeRoot,testSet=testSet)
+    print("Before Pruning Accuracy: ", accuracy)
+    pruneNode(decisionTreeRoot,decisionTreeRoot,validationSet=validationSet)
+    accuracy = getAccuracy(decisionTreeRoot,testSet)
+    print("After Pruning Accuracy: ", accuracy)
+
+
 
 if __name__ == "__main__":
     main()
