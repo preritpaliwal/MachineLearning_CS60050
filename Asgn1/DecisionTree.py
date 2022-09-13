@@ -1,3 +1,4 @@
+from fileinput import filename
 import pandas as pd
 import numpy as np
 
@@ -6,14 +7,13 @@ class Node:
         self.attribute = attribute
         self.children = {}
         self.label = None
+        self.isleaf = False
     
     def addChild(self,x):
         self.children[x[0]] = x[1]
     
     def isLeaf(self):
-        if self.label is not None:
-            return True
-        return False
+        return self.isleaf
 
 def getEntropy(y):
     total = len(y)
@@ -33,11 +33,7 @@ def getIG(x,y, attr):
     for i in range(len(valCnt)):
         yi = y[x[attr]==valCnt.index[i]]
         entropies.append(getEntropy(yi))
-    # print(valCnt)
-    # print(attr)
     for i in range(len(valCnt)):
-        # print("valCnt.index[i] = ",valCnt.index[i])
-        # print(valCnt[valCnt.index[i]])
         tmp = valCnt[valCnt.index[i]]/total
         finalEntropy += tmp*entropies[i]
     return initialEntropy - finalEntropy
@@ -45,16 +41,13 @@ def getIG(x,y, attr):
 def getInfoGainList(x,y,attrs):
     infoGain = []
     for attr in attrs:
-        # print("calling for attribute : ",attr)
         infoGain.append(getIG(x,y,attr))
     return infoGain
 
 def getNextNode(x,y):
     # All current Attributes
     attributes = x.columns.values
-    # print("Attributes : ",attributes)
     if(len(attributes)==0):
-        # print("why go here")
         return None
 
     if(len(attributes)==1):
@@ -62,28 +55,28 @@ def getNextNode(x,y):
         n = Node(attribute=attributes[0])
         # setting as the one with max frquency
         n.label = valCnt.index[0]
+        n.isleaf = True
         return n
     
     # find information gain of all attributes 
-    # print("finding info gain")
     InfoGainPerAttr = getInfoGainList(x,y,attributes)
-    # print(InfoGainPerAttr)
     
     # find attribute with maximum information gain
     i_max = np.argmax(InfoGainPerAttr)
     
-    if InfoGainPerAttr[i_max]<0.0001:
+    if InfoGainPerAttr[i_max]<0.001:
         valCnt = y.value_counts()
         n = Node(attribute=attributes[i_max])
         # setting as the one with max frquency
         n.label = valCnt.index[0]
+        n.isleaf = True
         return n
     
     # create a node with that as attribute
     n = Node(attribute=attributes[i_max])
-    # print("Node attribute = ",n.attribute)
     # find all dataSet seperated based on attribute with max information gain
     valCnt = x[attributes[i_max]].value_counts()
+    n.label = y.value_counts().index[0]
     for i in range(len(valCnt)):
         xi = x[x[attributes[i_max]]==valCnt.index[i]]
         yi = y[x[attributes[i_max]]==valCnt.index[i]]
@@ -96,8 +89,6 @@ def getNextNode(x,y):
 def decisionTree(TrainData):
     x = TrainData.drop(columns="Segmentation")
     y = TrainData["Segmentation"]
-    # print(x.head())
-    # print(y.head())
     return getNextNode(x,y)
 
 def predict(decisionTreeNode, x):
@@ -107,7 +98,6 @@ def predict(decisionTreeNode, x):
     if x_bar in decisionTreeNode.children:
         newNode = decisionTreeNode.children[x_bar]
     else:
-        # print("Fuckkkkkkkkkkk again..!!!!")
         return None
     return predict(newNode,x)
 
@@ -118,26 +108,64 @@ def getAccuracy(root, testSet):
         y_hat = predict(decisionTreeNode=root,x=sample)
         if y_hat==sample["Segmentation"]:
             accuracy+=1
-            # print("hurrayyy..!! correct accuracy increased",accuracy)
     accuracy = accuracy/len(testSet)
-    print("Accuracy = ",accuracy)
     return accuracy
 
-def pruneNode(root, curNode, validationSet,depth=0):
+def pruneNode(root, curNode, validationSet):
+    noNodesBefore = 1
+    noNodesAfter = 1
+    curDepth = 1
     if curNode.isLeaf():
-        return
-    i = 0
+        return noNodesBefore,noNodesAfter,1
     for child in curNode.children:
-        print("before i = ",i," at depth : ",depth)
-        pruneNode(root=root,curNode=curNode.children[child],validationSet=validationSet,depth=depth+1)
-        print("done with child i = ",i," at depth : ",depth)
-        i += 1
+        validationSet_ = validationSet[validationSet[curNode.attribute] == child]
+        if(len(validationSet_) == 0):
+            continue
+        noNodes = pruneNode(root=root,curNode=curNode.children[child],validationSet=validationSet_)
+        noNodesBefore += noNodes[0]
+        noNodesAfter += noNodes[1]
+        curDepth = max(noNodes[2]+1,curDepth)
     
     initialAccuracy = getAccuracy(root, validationSet)
     valCnt = validationSet["Segmentation"].value_counts()
+    prev_label = curNode.label
     curNode.label = valCnt.index[0]
+    curNode.isleaf = True
     newAccuracy = getAccuracy(root, validationSet)
     if newAccuracy < initialAccuracy + 0.001:
-        print("\n\n\nundoo pruning.........\n\n\n")
-        curNode.label = None
-    return
+        curNode.label = prev_label
+        curNode.isleaf = False
+    else:
+        noNodesAfter = 1
+        curDepth = 1
+    return noNodesBefore,noNodesAfter,curDepth
+
+def writeTree(root, file, depth = 0):
+    str1 = "\n\n###############\nDEPTH LEVEL = " + str(depth) + "\n"
+    str2 = "\nNode Attribute = " + str(root.attribute) + "\n"
+    if not root.isleaf:
+        str3 = "Children of this node are as follows : \n"
+        for i in root.children:
+            str3 += "if you get a " + str(i) + " go to this node with attribute : " + root.children[i].attribute + "\n"
+    else:
+        str3 = "Label of this node is : " + str(root.label)
+    file.writelines(str1+str2+str3)
+    
+    for i in root.children:
+        writeTree(root.children[i],file,depth+1)
+
+def getAccuracyWithDepth(root, testSet, accuracyWithDepth, depth=0):
+    
+    for i in range(len(testSet)):
+        sample = testSet.iloc[i]
+        update(root, sample, accuracyWithDepth, depth)
+    
+def update(root, sample, accuracyWithDepth, depth):
+    if sample["Segmentation"] == root.label:
+        accuracyWithDepth[depth] += 1
+    if not root.isleaf:
+        if sample[root.attribute] in root.children:
+            newNode = root.children[sample[root.attribute]]
+        else:
+            return 
+        update(newNode, sample, accuracyWithDepth, depth=depth+1)

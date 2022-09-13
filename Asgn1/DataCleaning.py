@@ -1,7 +1,6 @@
 from unicodedata import category
 import pandas as pd
 import numpy as np
-# import matplotlib.pyplot as plt
 
 df = pd.read_csv("Dataset_A.csv")
 
@@ -10,14 +9,11 @@ df = pd.read_csv("Dataset_A.csv")
 """
 
 naList = df.isna().sum()
-# print(naList)
 for i in range(len(naList)):
     if(naList[i]>0):
         col = naList.index[i]
         valCnt = df[col].value_counts()
         df = df.fillna({col:valCnt.index[0]})
-
-# print(df.isna().sum())
 
 """
 LABEL ENCODING
@@ -40,13 +36,6 @@ Grouping Age into 0-9, 10-19, 20-29, etc ranges
 """
 
 df["Age"] = df["Age"]//10
-
-# valCnt = df["Gender"].value_counts()
-# dfs = []
-# for i in range(len(valCnt)):
-#     dfi = df[df["Gender"]==valCnt.index[i]]
-#     dfs.append(dfi)
-#     print(dfi)
 
 
 """

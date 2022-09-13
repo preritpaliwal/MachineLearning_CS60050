@@ -1,0 +1,124 @@
+
+
+For 0th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8763000663863687
+Before Pruning Accuracy ValidationSet:  0.3677685950413223
+Before Pruning Accuracy TestSet:  0.3527588344699318
+After Pruning Accuracy TrainSet:  0.675813233016154
+After Pruning Accuracy ValidationSet:  0.6389462809917356
+After Pruning Accuracy TestSet:  0.41475511469311843
+No of Nodes before and after pruning: 2048 1368
+depth of this tree is :  9
+
+
+For 1th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8780703695507855
+Before Pruning Accuracy ValidationSet:  0.37758264462809915
+Before Pruning Accuracy TestSet:  0.37011779293242403
+After Pruning Accuracy TrainSet:  0.6534631555653906
+After Pruning Accuracy ValidationSet:  0.6544421487603306
+After Pruning Accuracy TestSet:  0.3930564166150031
+No of Nodes before and after pruning: 2028 1297
+depth of this tree is :  9
+
+
+For 2th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8771852179685771
+Before Pruning Accuracy ValidationSet:  0.38894628099173556
+Before Pruning Accuracy TestSet:  0.36577805331680097
+After Pruning Accuracy TrainSet:  0.6550121708342553
+After Pruning Accuracy ValidationSet:  0.6621900826446281
+After Pruning Accuracy TestSet:  0.4116553006819591
+No of Nodes before and after pruning: 2058 1317
+depth of this tree is :  9
+
+
+For 3th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8780703695507855
+Before Pruning Accuracy ValidationSet:  0.37758264462809915
+Before Pruning Accuracy TestSet:  0.4048357098574086
+After Pruning Accuracy TrainSet:  0.6618720955963708
+After Pruning Accuracy ValidationSet:  0.6456611570247934
+After Pruning Accuracy TestSet:  0.4265344079355239
+No of Nodes before and after pruning: 2030 1393
+depth of this tree is :  9
+
+
+For 4th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8720955963708785
+Before Pruning Accuracy ValidationSet:  0.3806818181818182
+Before Pruning Accuracy TestSet:  0.38127712337259767
+After Pruning Accuracy TrainSet:  0.6598805045364019
+After Pruning Accuracy ValidationSet:  0.6544421487603306
+After Pruning Accuracy TestSet:  0.4203347799132052
+No of Nodes before and after pruning: 2044 1395
+depth of this tree is :  9
+
+
+For 5th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8776277937596814
+Before Pruning Accuracy ValidationSet:  0.3734504132231405
+Before Pruning Accuracy TestSet:  0.3949163050216987
+After Pruning Accuracy TrainSet:  0.6461606550121708
+After Pruning Accuracy ValidationSet:  0.6518595041322314
+After Pruning Accuracy TestSet:  0.4228146311221327
+No of Nodes before and after pruning: 2014 1168
+depth of this tree is :  9
+
+
+For 6th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8716530205797743
+Before Pruning Accuracy ValidationSet:  0.3677685950413223
+Before Pruning Accuracy TestSet:  0.36949783013019216
+After Pruning Accuracy TrainSet:  0.6576676255808808
+After Pruning Accuracy ValidationSet:  0.6306818181818182
+After Pruning Accuracy TestSet:  0.41103533787972724
+No of Nodes before and after pruning: 2007 1300
+depth of this tree is :  9
+
+
+For 7th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8782916574463376
+Before Pruning Accuracy ValidationSet:  0.36983471074380164
+Before Pruning Accuracy TestSet:  0.38933663980161193
+After Pruning Accuracy TrainSet:  0.6780261119716752
+After Pruning Accuracy ValidationSet:  0.6342975206611571
+After Pruning Accuracy TestSet:  0.39615623062616245
+No of Nodes before and after pruning: 2013 1366
+depth of this tree is :  9
+
+
+For 8th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8860367337906616
+Before Pruning Accuracy ValidationSet:  0.3744834710743802
+Before Pruning Accuracy TestSet:  0.38189708617482954
+After Pruning Accuracy TrainSet:  0.6654127019252047
+After Pruning Accuracy ValidationSet:  0.6317148760330579
+After Pruning Accuracy TestSet:  0.38685678859268446
+No of Nodes before and after pruning: 2047 1396
+depth of this tree is :  9
+
+
+For 9th random split: 
+
+Before Pruning Accuracy TrainSet:  0.8763000663863687
+Before Pruning Accuracy ValidationSet:  0.3992768595041322
+Before Pruning Accuracy TestSet:  0.3973961562306262
+After Pruning Accuracy TrainSet:  0.6576676255808808
+After Pruning Accuracy ValidationSet:  0.6544421487603306
+After Pruning Accuracy TestSet:  0.4116553006819591
+No of Nodes before and after pruning: 2055 1397
+depth of this tree is :  9
+-------------------------------------------
+
+Best Accuracy :  0.4265344079355239
+[0.3013019218846869, 0.44575325480471173, 0.49287042777433354, 0.5009299442033478, 0.4662120272783633, 0.3180409175449473, 0.2231866088034718, 0.10105393676379418, 0.03595784252944823]
