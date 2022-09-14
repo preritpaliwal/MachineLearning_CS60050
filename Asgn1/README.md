@@ -39,3 +39,7 @@ python3 DataCleaning.py
 python3 Q1.py
 python3 Q2.py
 ```
+
+- [DecisionTree.txt](/Asgn1/DecisionTree.txt) contains the final decision tree.
+- [accuracy_VS_depth.png](/Asgn1/accuracy_VS_depth.png) conatins the plot of accuracy vs depth for the decision tree.
+- [NaiveBayes.txt](/Asgn1/NaiveBayes.txt) contains the results for Naive Bayes classifier.
