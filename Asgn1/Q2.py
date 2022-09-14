@@ -18,13 +18,17 @@ def trainTestSplit(dataSet, testRatio, shuffle=True):
 
 def main():
     df = pd.read_csv("cleanedData.csv")
+
+    print("::Final set of features formed::")
+    print(df.columns[:-1])
+
     train, test = trainTestSplit(df, 0.2, shuffle=True)
     
     NB = NaiveBayes(train, test, n_folds)
 
     scores, summary = NB.fit()
 
-    print("::Naive Bayes using {} cross validation::".format(n_folds))
+    print("\n::Naive Bayes using {} cross validation::".format(n_folds))
     for i in range(n_folds):
         print('Iteration({}) score = {}'.format(i+1,scores[i]))
 
@@ -38,7 +42,7 @@ def main():
 
     prior, post = NB.fit(laplace_corr=True)
 
-    print("::Naive Bayes using Laplace correction::")
+    print("\n::Naive Bayes using Laplace correction::")
 
     test_acc = NB.get_test_accuracy_laplacian(prior, post)
 
