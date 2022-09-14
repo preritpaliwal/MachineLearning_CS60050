@@ -1,0 +1,28 @@
+::Final set of features formed::
+Index(['Gender', 'Ever_Married', 'Age', 'Graduated', 'Profession',
+       'Work_Experience', 'Spending_Score', 'Family_Size', 'Var_1'],
+      dtype='object')
+
+Original datset size = 8068
+Datset size after removing outliers= 8066
+
+::Naive Bayes using 10 cross validation::
+Iteration(1) score = 47.13178294573643
+Iteration(2) score = 46.821705426356594
+Iteration(3) score = 48.68217054263566
+Iteration(4) score = 49.6124031007752
+Iteration(5) score = 48.21705426356589
+Iteration(6) score = 48.06201550387597
+Iteration(7) score = 46.04651162790698
+Iteration(8) score = 49.14728682170543
+Iteration(9) score = 51.31782945736434
+Iteration(10) score = 47.751937984496124
+
+Model scores:
+Train Accuracy: 48.27906976744187
+Test Accuracy: 46.7451952882827
+
+::Naive Bayes using Laplace correction::
+
+Model scores:
+Test Accuracy: 50.4649721016739
