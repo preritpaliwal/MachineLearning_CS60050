@@ -18,6 +18,10 @@ pca = PCA(0.95)
 principalComponents = pca.fit_transform(x_normalised)
 principalDf = pd.DataFrame(data = principalComponents)
 
+print(pca.explained_variance_ratio_)
+plt.plot(pca.explained_variance_ratio_)
+plt.savefig("Variance_VS_Component_number.png", format="png")
+plt.show()
 
 K,NMI = [],[]
 for k in range(2,9):
@@ -26,5 +30,8 @@ for k in range(2,9):
     K.append(k)
     NMI.append(nmi)
 
+print(K)
+print(NMI)
 plt.plot(K,NMI)
+plt.savefig("K_VS_NMI.png", format="png")
 plt.show()
