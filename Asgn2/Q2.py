@@ -9,6 +9,7 @@ def main():
     x = df.iloc[:, 1:].to_numpy()
     y = df.iloc[:, 0].to_numpy()
     
+
     xTrainSet, xTestSet, yTrainSet, yTestSet = trainTestSplit(x, y)
     xTrainSet, xTestSet = normalize(xTrainSet, xTestSet)
 
@@ -23,6 +24,7 @@ def main():
     bsvmList = []
     kernels = ['linear', 'poly', 'rbf']
 
+    # varyin g kernels
     for kernel in kernels:
         BSVM = BinarySVM(xTrain=xTrainSet, yTrain=yTrainSet, kernel=kernel)
         BSVM.fitModel()
@@ -39,6 +41,7 @@ def main():
     mplList = []
     hidden_layer_sizes=[(16,), (256, 16)]
 
+    # varying hidden layer sizes
     for hidden_layer_size in hidden_layer_sizes:
         MPLC = MLP(hidden_layer_sizes=hidden_layer_size, xTrain=xTrainSet, yTrain=yTrainSet)
         MPLC.fitModel()
@@ -56,6 +59,7 @@ def main():
 
     print("\nMLP with different learning rates")
 
+    # varying learning rate
     for lr in learning_rate_list:
         MPLC = MLP(hidden_layer_sizes=bestMLPC.hidden_layer_sizes, xTrain=xTrainSet, yTrain=yTrainSet, learning_rate=lr)
         MPLC.fitModel()
@@ -82,10 +86,13 @@ def main():
     # Ensemble learning
     yEnsembledPred = np.zeros(yPrediction.shape)
 
+    # Max voting technique, get mode in prediction labels from multiple models
     for y in range(len(yEnsembledPred)):
         yEnsembledPred[y] = st.mode([bestMLPC.yTest[y], bsvmList[1][0].yTest[y], bsvmList[2][0].yTest[y]])
 
+    # Evaluate final accuracy
     ensembledAccuracy = np.mean(yEnsembledPred == yTestSet)
+
     print("\nAccuracy after ensembling max voting =", ensembledAccuracy)
 
 if __name__ == "__main__":

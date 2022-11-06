@@ -6,9 +6,9 @@ Directory for the `second` and final assignment of Machine Learning course (CS60
 
 ## Getting started
 
-Read the assignment problem statement from [Assignment_2.pdf](/assignment_2/Assignment_2.pdf)
+Read the assignment problem statement from [Assignment_2.pdf](/Asgn2/Assignment%202_Gr_A.pdf)
 
-Dataset is provided here- [Dataset_A.csv](https://archive.ics.uci.edu/ml/datasets/Wine) and its description in [Dataset_A_Description.pdf](/assignment_2/Dataset_A_Description.pdf)
+Dataset is provided here- [Dataset_A.csv](https://archive.ics.uci.edu/ml/datasets/Wine) and its description in [Dataset_A_Description.pdf](/Asgn2/Dataset%20%20Description_Gr_A.pdf)
 
 Python version information-  
 
@@ -36,4 +36,7 @@ python Q1.py
 python Q2.py
 ```
 
-- [learning_rate_vs_accuracy](/assignment_2/learning_rate_vs_accuracy.png) conatins the plot of learning rate vs accuracy of MLP model.
+- [learning_rate_vs_accuracy](/Asgn2/learning_rate_vs_accuracy.png) conatins the plot of learning rate vs accuracy of MLP model.
+- [K_VS_NMI](/Asgn2/K_VS_NMI.png) conatins the plot of Normalized mutual information vs number of clusters.
+- [PCA_visulation](/Asgn2/PCA_visulation.png) conatins the scatter plot of data with first two principal components
+- [Variance_VS_Component_number](/Asgn2/Variance_VS_Component_number.png) contains the plot of cumulative variance of data vs number of components. 
