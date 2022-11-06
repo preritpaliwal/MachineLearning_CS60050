@@ -2,13 +2,10 @@ import numpy as np
 """
 Function to get initial cluster representatives.
 """
-def getInitialRep(k,data,random):
+def getInitialRep(k,data):
     rep = []
     for i in range(k):
-        if random:
-            rep.append(np.random.rand(28,28)*255)
-        else:
-            rep.append(data.iloc[i])
+        rep.append(data.iloc[i])
     return rep
 
 # function to calculate NMI

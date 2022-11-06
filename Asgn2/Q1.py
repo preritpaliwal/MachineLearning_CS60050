@@ -10,7 +10,6 @@ df = read_data()
 x = df.drop(columns=["Target Class"],axis=1)
 y = df["Target Class"]
 
-
 x_normalised,y_normalised = normalize(x,y)
 
 pca = PCA(0.95)
@@ -36,8 +35,7 @@ plt.show()
 
 K,NMI = [],[]
 for k in range(2,9):
-    random = False
-    J, reps, nmi = Kmeans(getInitialRep(k,principalDf,random),principalDf,y)
+    J, reps, nmi = Kmeans(getInitialRep(k,principalDf),principalDf,y)
     K.append(k)
     NMI.append(nmi)
 
