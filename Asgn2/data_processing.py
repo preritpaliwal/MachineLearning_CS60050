@@ -4,7 +4,7 @@ from Models import MLP
 
 def read_data():
     cols_list = [
-        'wine',
+        'Target Class',
         'alcohol',
         'malic acid',
         'ash',
@@ -21,10 +21,8 @@ def read_data():
     ]
 
     df = pd.read_csv('wine.data', sep=',', header=None, names=cols_list)
-
-    x = df.iloc[:, 1:].to_numpy()
-    y = df.iloc[:, 0].to_numpy()
-    return x, y
+    
+    return df
 
 def trainTestSplit(x, y, testRatio=0.2, shuffle=True):
 

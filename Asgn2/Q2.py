@@ -5,8 +5,10 @@ from data_processing import read_data, trainTestSplit, normalize, forward_featur
 import matplotlib.pyplot as plt
 
 def main():
-    x, y = read_data()
-
+    df = read_data()
+    x = df.iloc[:, 1:].to_numpy()
+    y = df.iloc[:, 0].to_numpy()
+    
     xTrainSet, xTestSet, yTrainSet, yTestSet = trainTestSplit(x, y)
     xTrainSet, xTestSet = normalize(xTrainSet, xTestSet)
 
