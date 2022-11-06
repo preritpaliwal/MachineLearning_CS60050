@@ -65,15 +65,15 @@ def main():
         print("::MLP with learning rate {} accuracy:: =>".format(lr), accuracy)
         accuracy_list.append(accuracy)
 
-    plt.xlim(0, 0.15)
-    plt.ylim(0.75, 1.01)
-    plt.xlabel("Learning rate")
+    # plt.xlim(-0.02, 0.15)
+    # plt.ylim(0.75, 1.01)
+    plt.xlabel("Learning rate (logarithmic scale)")
     plt.ylabel("Accuracy")
-    plt.plot(learning_rate_list, accuracy_list, '-ok')
+    plt.plot(np.log10(learning_rate_list), accuracy_list, '-ok')
 
     plt.savefig("learning_rate_vs_accuracy.png", format="png")
     plt.show()
-
+    
     print("\n::Running forward feature selection algorithm::")
     features = forward_feature_selection(bestMLPC, xTestSet, yTestSet)
 
